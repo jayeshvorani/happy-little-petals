@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Little Petals — Parent Garden 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --cream:#FBF3E2;
+    --paper:#FFFCF5;
+    --ink:#332B22;
+    --ink-soft:#6B6153;
+    --leaf:#2F5233;
+    --leaf-light:#6FA26A;
+    --coral:#F0665C;
+    --coral-dark:#D6483F;
+    --gold:#EFA83A;
+    --gold-dark:#C7842A;
+    --plum:#9C6BA0;
+    --plum-dark:#7B4F80;
+    --sky:#5AA9AE;
+    --sky-dark:#3E7F84;
+    --soil:#8A5B37;
+    --line:#E7DBC3;
+    --shadow: 0 10px 30px -12px rgba(75,55,20,0.25);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Nunito',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif; margin:0; color:var(--leaf);}
+  p{margin:0;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--gold); color:#fff;}
+
+  /* ---------- utility ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Nunito',sans-serif; font-weight:800; font-size:12.5px;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--coral-dark);
+    background:#fff; border:1px solid var(--line); padding:7px 16px 7px 12px;
+    border-radius:999px; box-shadow: 0 2px 0 var(--line);
+  }
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    .reveal{opacity:1; transform:none;}
+  }
+  section{position:relative;}
+  .section-head{max-width:640px; margin:0 auto 46px; text-align:center;}
+  .section-head h2{font-size:clamp(28px,4vw,38px); font-weight:700;}
+  .section-head p{margin-top:12px; color:var(--ink-soft); font-size:17px;}
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative; padding:64px 0 0; overflow:hidden;
+    background:
+      radial-gradient(ellipse 70% 50% at 18% 8%, rgba(239,168,58,.22), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 85% 0%, rgba(90,169,174,.20), transparent 60%),
+      var(--cream);
+  }
+  .cloud{position:absolute; background:#fff; border-radius:100px; opacity:.75; filter:blur(.3px);}
+  .cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:100px;}
+  .c1{width:120px;height:42px; top:60px; left:6%;}
+  .c1:before{width:60px;height:60px;top:-28px;left:14px;}
+  .c1:after{width:44px;height:44px;top:-20px;left:60px;}
+  .c2{width:90px;height:34px; top:120px; right:10%; opacity:.6;}
+  .c2:before{width:46px;height:46px;top:-20px;left:10px;}
+  .c2:after{width:34px;height:34px;top:-14px;left:46px;}
+  .sun{position:absolute; top:34px; right:9%; width:86px; height:86px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFE39C, var(--gold) 70%);
+    box-shadow:0 0 0 14px rgba(239,168,58,.15), 0 0 0 28px rgba(239,168,58,.08);
+    animation:pulse 5s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+
+  .petal-drift{position:absolute; inset:0; pointer-events:none;}
+  .petal-drift span{
+    position:absolute; top:-40px; width:14px; height:18px; border-radius:60% 60% 60% 0%;
+    opacity:.55; animation:drift linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(-40px) translateX(0) rotate(0deg); opacity:0;}
+    10%{opacity:.6;}
+    100%{transform:translateY(560px) translateX(60px) rotate(300deg); opacity:0;}
+  }
+
+  .hero-inner{position:relative; z-index:2; text-align:center; padding:36px 0 40px;}
+  .hero-inner .eyebrow{margin-bottom:22px;}
+  .hero-inner h1{
+    font-size:clamp(38px,6.4vw,66px); line-height:1.04; font-weight:700;
+    color:var(--leaf); letter-spacing:-.01em;
+  }
+  .hero-inner h1 em{font-style:normal; color:var(--coral); position:relative;}
+  .hero-sub{max-width:560px; margin:20px auto 0; font-size:19px; color:var(--ink-soft);}
+
+  .stat-row{
+    display:flex; gap:22px; justify-content:center; flex-wrap:wrap;
+    margin-top:42px;
+  }
+  .stat-medal{
+    background:var(--paper); border:1px solid var(--line); border-radius:24px;
+    padding:26px 30px; box-shadow:var(--shadow); min-width:200px; text-align:left;
+    display:flex; align-items:center; gap:16px;
+  }
+  .stat-medal .ring{
+    width:74px;height:74px;border-radius:50%; flex:none;
+    display:flex;align-items:center;justify-content:center; position:relative;
+  }
+  .stat-medal .ring span{font-family:'Fredoka'; font-weight:700; font-size:16px; color:var(--ink);}
+  .stat-medal .ring::before{
+    content:""; position:absolute; inset:6px; background:var(--paper); border-radius:50%;
+  }
+  .stat-medal .ring b{position:relative; z-index:1;}
+  .stat-label{font-size:13.5px; color:var(--ink-soft); font-weight:700; line-height:1.35; max-width:150px;}
+  .stat-label strong{display:block; color:var(--ink); font-size:14.5px;}
+
+  .hero-ground{
+    position:relative; height:64px; margin-top:26px;
+  }
+  .hero-ground svg{display:block; width:100%; height:100%;}
+
+  /* ================= GARDEN ================= */
+  .garden{background:var(--paper); padding:88px 0 96px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .garden-layout{display:grid; grid-template-columns: 1.35fr 1fr; gap:34px; align-items:start;}
+  @media (max-width:860px){.garden-layout{grid-template-columns:1fr;}}
+
+  .bed{
+    border-radius:var(--radius-lg);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .bed-flowers{
+    background:linear-gradient(180deg, transparent 0%, transparent 78%, #E9DCBB 78%, #E4D3A9 100%);
+    padding:34px 26px 22px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+  }
+  @media (max-width:640px){
+    .bed-flowers{grid-template-columns:repeat(2,1fr); row-gap:34px;
+      background:linear-gradient(180deg, transparent 0%, transparent 88%, #E9DCBB 88%, #E4D3A9 100%);}
+  }
+  .bed-panels{background:var(--paper);}
+
+  .flowerpot{text-align:center; cursor:pointer; background:none; border:none; font-family:inherit; padding:6px 4px 0; width:100%;}
+  .flowerpot:focus-visible{outline:3px solid var(--sky); outline-offset:4px; border-radius:12px;}
+  .flower-wrap{position:relative; width:118px; height:118px; margin:0 auto 6px; transition:transform .35s ease;}
+  .flowerpot:hover .flower-wrap, .flowerpot.active .flower-wrap{transform:translateY(-6px) scale(1.04);}
+  .stem{position:absolute; bottom:-14px; left:50%; width:4px; height:26px; background:var(--leaf-light); transform:translateX(-50%); border-radius:3px;}
+  .leaf{position:absolute; bottom:-6px; width:16px;height:9px; background:var(--leaf-light); border-radius:0 100% 0 100%;}
+  .leaf.l{left:calc(50% - 15px); transform:rotate(20deg);}
+  .leaf.r{left:calc(50% + 1px); transform:rotate(-20deg) scaleX(-1);}
+  .petal-spoke{position:absolute; top:50%; left:50%; width:26px; height:50px; margin:-50px 0 0 -13px; transform-origin:50% 100%;}
+  .petal{position:absolute; top:0; left:0; width:26px; height:44px;
+    border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;}
+  .flower-center{
+    position:absolute; top:50%; left:50%; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%;
+    display:flex;align-items:center;justify-content:center; box-shadow:inset 0 0 0 4px #fff;
+    z-index:3;
+  }
+  .flower-center span{font-family:'Fredoka'; font-weight:700; font-size:13.5px; color:#fff;}
+  .flower-name{font-weight:800; font-size:13.5px; margin-top:10px; color:var(--ink);}
+  .flower-meta{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+  .flower-chevron{margin-top:6px; font-size:11px; color:var(--ink-soft);}
+  .flower-chevron .chev{display:inline-block; transition:transform .3s ease;}
+  .flowerpot.active .flower-chevron .chev{transform:rotate(180deg);}
+
+  .side-card{
+    background:var(--cream); border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:24px 22px; box-shadow:var(--shadow);
+  }
+  .side-card h3{font-size:17px; margin-bottom:4px;}
+  .side-card .sub{font-size:13px; color:var(--ink-soft); margin-bottom:14px;}
+  .chart-box{position:relative; height:220px;}
+  .legend-mini{display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:14px; font-size:12.5px; color:var(--ink-soft);}
+  .legend-mini span{display:inline-flex; align-items:center; gap:6px; font-weight:700;}
+  .legend-mini i{width:10px;height:10px;border-radius:3px; display:inline-block;}
+
+  .qpanel{
+    overflow:hidden; max-height:0;
+    transition:max-height .5s ease;
+  }
+  .qpanel.open{max-height:2000px;}
+  .qpanel-inner{padding:22px 26px 26px;}
+  .qpanel-title{font-family:'Fredoka'; font-weight:600; font-size:16px; color:var(--ink); margin-bottom:2px;}
+  .qpanel-sub{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+  .qrow{padding:10px 0; border-top:1px solid var(--line);}
+  .qrow:first-of-type{border-top:none;}
+  .qrow-top{display:flex; justify-content:space-between; gap:14px; font-size:13.8px; font-weight:700; margin-bottom:6px;}
+  .qrow-top .qpct{white-space:nowrap; color:var(--ink-soft); font-weight:800;}
+  .qbar{height:9px; border-radius:6px; background:#EEE3C9; overflow:hidden; display:flex;}
+  .qbar-sa{height:100%;}
+  .qbar-a{height:100%; opacity:.55;}
+  .qmeta{font-size:11.5px; color:var(--ink-soft); margin-top:5px;}
+
+  /* ================= GROWTH TIMELINE ================= */
+  .growth{padding:92px 0; background:var(--cream);}
+  .timeline{display:flex; align-items:flex-end; justify-content:space-between; gap:14px; max-width:820px; margin:0 auto; position:relative; padding-top:10px;}
+  .timeline:before{
+    content:""; position:absolute; left:6%; right:6%; top:78px; height:3px;
+    background:repeating-linear-gradient(90deg, var(--line) 0 10px, transparent 10px 18px);
+  }
+  .tstage{flex:1; text-align:center; position:relative; z-index:1;}
+  .tplant{font-size:38px; display:block; margin-bottom:10px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.08));}
+  .tcount{
+    width:40px;height:40px; border-radius:50%; background:var(--leaf); color:#fff; font-family:'Fredoka'; font-weight:700;
+    display:flex; align-items:center; justify-content:center; margin:0 auto 10px; box-shadow:var(--shadow); font-size:16px;
+  }
+  .tlabel{font-weight:800; font-size:13.5px; color:var(--ink);}
+  .tsub{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+
+  /* ================= VOICES ================= */
+  .voices{padding:92px 0; background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .carousel{max-width:720px; margin:0 auto; position:relative;}
+  .cards{position:relative; min-height:250px;}
+  .vcard{
+    position:absolute; inset:0; background:var(--cream); border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:38px 42px; box-shadow:var(--shadow); opacity:0; transform:translateX(30px) scale(.98);
+    transition:opacity .5s ease, transform .5s ease; pointer-events:none;
+  }
+  .vcard.show{opacity:1; transform:translateX(0) scale(1); pointer-events:auto; position:relative;}
+  .vcard .mark{font-family:'Fredoka'; font-size:46px; color:var(--coral); opacity:.35; line-height:.5; display:block; margin-bottom:6px;}
+  .vcard blockquote{margin:0; font-size:19px; line-height:1.55; color:var(--ink); font-weight:600;}
+  .vcard-footer{margin-top:20px; display:flex; align-items:center; gap:12px;}
+  .avatar{width:42px;height:42px;border-radius:50%; display:flex;align-items:center;justify-content:center; color:#fff; font-family:'Fredoka'; font-weight:700; font-size:15px; flex:none;}
+  .vname{font-weight:800; font-size:14.5px;}
+  .vtag{font-size:12px; color:var(--ink-soft);}
+  .carousel-ctrls{display:flex; align-items:center; justify-content:center; gap:18px; margin-top:26px;}
+  .cbtn{width:42px;height:42px;border-radius:50%; border:1px solid var(--line); background:#fff; cursor:pointer; font-size:16px; color:var(--leaf); display:flex;align-items:center;justify-content:center; box-shadow:0 2px 0 var(--line); transition:transform .2s ease;}
+  .cbtn:hover{transform:translateY(-2px);}
+  .dots{display:flex; gap:8px;}
+  .dot{width:9px;height:9px;border-radius:50%; background:var(--line); cursor:pointer; border:none; padding:0;}
+  .dot.active{background:var(--coral); width:22px; border-radius:5px; transition:width .3s ease;}
+
+  /* ================= LITTLE VOICES ================= */
+  .little{padding:92px 0 100px; background:var(--cream); position:relative;}
+  .note-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:26px; max-width:1000px; margin:0 auto;}
+  @media (max-width:900px){.note-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.note-grid{grid-template-columns:1fr;}}
+  .note{
+    background:var(--paper); border-radius:14px 14px 40% 14px/14px 14px 60% 14px; padding:24px 20px 20px;
+    box-shadow:var(--shadow); position:relative; transition:transform .25s ease;
+  }
+  .note:hover{transform:rotate(0deg) translateY(-4px) !important;}
+  .note:nth-child(1){transform:rotate(-3deg);}
+  .note:nth-child(2){transform:rotate(2.5deg);}
+  .note:nth-child(3){transform:rotate(-2deg);}
+  .note:nth-child(4){transform:rotate(3deg);}
+  .pin{width:14px;height:14px;border-radius:50%; position:absolute; top:-7px; left:50%; margin-left:-7px; box-shadow:0 3px 4px rgba(0,0,0,.25);}
+  .note-quote{font-family:'Caveat'; font-weight:700; font-size:24px; line-height:1.28; color:var(--ink);}
+  .note-who{margin-top:14px; font-family:'Nunito'; font-weight:800; font-size:12.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em;}
+  .note-extra{margin-top:10px; font-family:'Caveat'; font-weight:600; font-size:17px; color:var(--coral-dark); border-top:1px dashed var(--line); padding-top:8px;}
+
+  /* ================= SEEDS ================= */
+  .seeds{padding:92px 0 100px; background:var(--paper); border-top:1px solid var(--line);}
+  .seed-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:26px; max-width:900px; margin:0 auto;}
+  @media (max-width:760px){.seed-grid{grid-template-columns:1fr;}}
+  .seed-card{
+    background:var(--cream); border:1px solid var(--line); border-radius:var(--radius-lg); padding:30px 32px;
+    box-shadow:var(--shadow);
+  }
+  .seed-card .icon{font-size:30px; margin-bottom:12px; display:block;}
+  .seed-card h3{font-size:19px; margin-bottom:10px;}
+  .seed-card p{color:var(--ink-soft); font-size:15.5px;}
+  .seed-quote{margin-top:14px; font-style:normal; font-family:'Caveat'; font-weight:700; font-size:19px; color:var(--sky-dark);}
+  .reassure{background:linear-gradient(180deg, #EFF7EE, #E7F2E5); border:1px solid #D6E9D3;}
+  .reassure blockquote{font-family:'Caveat'; font-weight:700; font-size:20px; color:var(--leaf); margin:0;}
+
+  /* ================= FOOTER ================= */
+  .site-footer{padding:60px 0 46px; text-align:center; background:var(--leaf); color:#EFE6D0;}
+  .site-footer .fl{font-size:26px; margin-bottom:12px;}
+  .site-footer h3{color:#fff; font-size:22px; margin-bottom:8px;}
+  .site-footer p{color:#CFE0C9; font-size:14px; max-width:520px; margin:0 auto;}
+  .site-footer .fine{margin-top:24px; font-size:12px; color:#9FBB98; max-width:560px; margin-left:auto; margin-right:auto;}
+
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .stat-medal{min-width:0; width:100%;}
+    .vcard{padding:28px 24px;}
+    .garden-layout{gap:24px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="sun"></div>
+  <div class="petal-drift" id="petalDrift"></div>
+
+  <div class="wrap hero-inner reveal in">
+    <span class="eyebrow">🌼 Parent Questionnaire · June 2026</span>
+    <h1>Every petal's<br><em>in full bloom.</em></h1>
+    <p class="hero-sub">Five families at Happy Little Petals, Tiney&nbsp;Homes took a few minutes to tell us how nursery life is really going. Here's the garden they helped us grow.</p>
+
+    <div class="stat-row">
+      <div class="stat-medal">
+        <div class="ring" style="background:conic-gradient(var(--coral) 100%, #eee 0)"><b><span>100%</span></b></div>
+        <div class="stat-label"><strong>5 of 5 families</strong> said yes — they're happy with the service</div>
+      </div>
+      <div class="stat-medal">
+        <div class="ring" style="background:conic-gradient(var(--gold) 92%, #eee 0)"><b><span>91.7%</span></b></div>
+        <div class="stat-label"><strong>Strongly Agree</strong> was the answer to 165 of 180 rated questions</div>
+      </div>
+      <div class="stat-medal">
+        <div class="ring" style="background:conic-gradient(var(--leaf) 100%, #eee 0)"><b><span>100%</span></b></div>
+        <div class="stat-label"><strong>Clean sweep</strong> — zero disagreements across all 185 ratings submitted</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-ground">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C 200,90 400,0 600,35 C 800,70 1000,10 1200,45 L1200,80 L0,80 Z" fill="#FFFCF5"></path></svg>
+  </div>
+</header>
+
+<!-- ================= GARDEN ================= -->
+<section class="garden" id="garden">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--sky-dark)">🌱 The garden bed</span>
+      <h2 style="margin-top:14px;">Our garden at a glance</h2>
+      <p>Every question we asked falls into one of four beds. Tap a flower to see exactly what's growing underneath.</p>
+    </div>
+
+    <div class="garden-layout reveal">
+      <div class="bed">
+        <div class="bed-flowers" id="bedFlowers"></div>
+        <div class="bed-panels" id="bedPanels"></div>
+      </div>
+
+      <div class="side-card">
+        <h3>Section comparison</h3>
+        <div class="sub">Share of answers that were "Strongly Agree," per bed</div>
+        <div class="chart-box"><canvas id="radarChart"></canvas></div>
+        <div class="legend-mini" id="radarLegend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GROWTH TIMELINE ================= -->
+<section class="growth" id="growth">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--soil)">🌰 Roots &amp; time</span>
+      <h2 style="margin-top:14px;">How long we've been growing together</h2>
+      <p>Our responses span brand-new starters to families who've been with us over two years.</p>
+    </div>
+    <div class="timeline reveal" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ================= VOICES ================= -->
+<section class="voices" id="voices">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">💬 In their words</span>
+      <h2 style="margin-top:14px;">Voices from the garden</h2>
+      <p>The comments parents left us, in full — nothing trimmed, nothing paraphrased.</p>
+    </div>
+    <div class="carousel reveal">
+      <div class="cards" id="cards"></div>
+      <div class="carousel-ctrls">
+        <button class="cbtn" id="prevBtn" aria-label="Previous testimonial">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="cbtn" id="nextBtn" aria-label="Next testimonial">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LITTLE VOICES ================= -->
+<section class="little" id="little-voices">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--plum-dark)">✏️ Straight from the little ones</span>
+      <h2 style="margin-top:14px;">In their own words</h2>
+      <p>We asked the grown-ups to pass the question on to their children. This is what came back.</p>
+    </div>
+    <div class="note-grid" id="noteGrid"></div>
+  </div>
+</section>
+
+<!-- ================= SEEDS ================= -->
+<section class="seeds" id="seeds">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--gold-dark)">🌾 Next season</span>
+      <h2 style="margin-top:14px;">Seeds we're planting</h2>
+      <p>With a garden this healthy, there was really only one clear ask.</p>
+    </div>
+    <div class="seed-grid reveal">
+      <div class="seed-card">
+        <span class="icon">🍎</span>
+        <h3>Snack tracking on the Tiny app</h3>
+        <p>One parent, new to us this term, would love to see AM and PM snacks logged alongside meals — so they know exactly how much their little one has eaten during the day.</p>
+        <div class="seed-quote">"Would be useful to also have a snack section on the Tiny app so we know how much and what AM and PM snacks they have eaten."</div>
+      </div>
+      <div class="seed-card reassure">
+        <span class="icon">🌿</span>
+        <h3>Everything else? Already blooming.</h3>
+        <blockquote>"All good as all seems to be organised very well."</blockquote>
+        <p style="margin-top:14px;">No other suggestions were raised across all five responses — a rare and lovely thing for a parent survey.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="fl">🌸 🌼 🌷 🌻 🪻</div>
+    <h3>Thank you to our five families</h3>
+    <p>Your honesty helps Happy Little Petals, Tiney Homes keep growing in the right direction — for every child who calls this garden their second home.</p>
+    <p class="fine">Based on 5 parent responses collected 26–30 June 2026. Percentages reflect the share of applicable answers for each question ("Not applicable" responses are excluded from scoring). No "Disagree" or "Strongly Disagree" ratings were received.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA — computed directly from the survey export
+   ============================================================ */
+const SECTIONS = [
+  {
+    key:'wellbeing', name:'Wellbeing & Voice', color:'#F0665C', colorDark:'#D6483F',
+    sa:63, a:11, na:1, pct:85.1, n:15,
+    questions:[
+      {q:"My child is happy at nursery", sa:5, a:0, na:0},
+      {q:"My child enjoys the activities at nursery", sa:5, a:0, na:0},
+      {q:"I am happy with the quality of care my child receives", sa:5, a:0, na:0},
+      {q:"There are a wide range of activities available to meet children's needs", sa:5, a:0, na:0},
+      {q:"My child is encouraged to be healthy", sa:5, a:0, na:0},
+      {q:"I feel happy approaching staff for help and support", sa:5, a:0, na:0},
+      {q:"I feel comfortable approaching staff to talk about my child's needs", sa:5, a:0, na:0},
+      {q:"I am aware of the setting's child protection policy", sa:4, a:0, na:1},
+      {q:"Children are consulted about their likes and dislikes", sa:4, a:1, na:0},
+      {q:"My child's individual needs are met", sa:4, a:1, na:0},
+      {q:"My child is supported to fully meet their potential", sa:4, a:1, na:0},
+      {q:"Children's interests are taken into account", sa:4, a:1, na:0},
+      {q:"I receive regular communication from nursery about events", sa:4, a:1, na:0},
+      {q:"I have opportunity to give ideas about improving the setting", sa:2, a:3, na:0},
+      {q:"I am aware of what to do as a parent if I have a concern for a child", sa:2, a:3, na:0},
+    ]
+  },
+  {
+    key:'environment', name:'Environment & Facilities', color:'#EFA83A', colorDark:'#C7842A',
+    sa:24, a:3, na:3, pct:88.9, n:6,
+    questions:[
+      {q:"The nursery is a safe place for children to attend", sa:5, a:0, na:0},
+      {q:"Happy Little Petals, Tiney Homes is well equipped", sa:4, a:0, na:1},
+      {q:"The parent notice board is accessible and easy to understand", sa:4, a:0, na:1},
+      {q:"Outdoor provision meets my child's needs", sa:4, a:1, na:0},
+      {q:"The setting is stimulating for children", sa:4, a:1, na:0},
+      {q:"The nursery is kept clean, bright and in good order", sa:3, a:1, na:1},
+    ]
+  },
+  {
+    key:'staff', name:'Staff & Safeguarding', color:'#5AA9AE', colorDark:'#3E7F84',
+    sa:44, a:1, na:0, pct:97.8, n:9,
+    questions:[
+      {q:"Staff treat children well", sa:5, a:0, na:0},
+      {q:"Parents' opinions and suggestions are valued", sa:5, a:0, na:0},
+      {q:"Staff are approachable and make time to listen to my concerns", sa:5, a:0, na:0},
+      {q:"I am confident that staff are well qualified", sa:5, a:0, na:0},
+      {q:"I know that if my child is struggling, they are being helped appropriately", sa:5, a:0, na:0},
+      {q:"I am confident that staff will do their best to protect children from harm", sa:5, a:0, na:0},
+      {q:"The staff are happy and work well together", sa:5, a:0, na:0},
+      {q:"Staff deal with my concerns appropriately", sa:5, a:0, na:0},
+      {q:"Staff keep me well informed of my child's progress", sa:4, a:1, na:0},
+    ]
+  },
+  {
+    key:'partnership', name:'Partnership & Leadership', color:'#9C6BA0', colorDark:'#7B4F80',
+    sa:34, a:0, na:1, pct:100.0, n:7,
+    questions:[
+      {q:"The nursery staff are helpful and approachable", sa:5, a:0, na:0},
+      {q:"The Nursery Manager is approachable and helpful", sa:5, a:0, na:0},
+      {q:"I am treated like a partner in my child's education", sa:5, a:0, na:0},
+      {q:"I get the chance to speak openly about anything that concerns me", sa:5, a:0, na:0},
+      {q:"Staff make an effort to explain what happens in the nursery", sa:5, a:0, na:0},
+      {q:"The nursery team is led well and works well together", sa:5, a:0, na:0},
+      {q:"The Deputy Manager is approachable and helpful", sa:4, a:0, na:1},
+    ]
+  },
+];
+
+const TIMELINE = [
+  {label:"Less than 6 months", short:"Just planted", plant:"🌰", count:1},
+  {label:"6 to 12 months", short:"Sprouting", plant:"🌱", count:2},
+  {label:"1 to 2 years", short:"Budding", plant:"🌿", count:1},
+  {label:"Over 2 years", short:"In full bloom", plant:"🌸", count:1},
+];
+
+const VOICES = [
+  {
+    quote:"Setting has been excellent, highly recommend.",
+    name:"A Happy Little Petals parent", child:"1–2 years with us", color:"#F0665C"
+  },
+  {
+    quote:"We are extremely happy with the care and support our child receives. My son is always happy, settled, and excited to attend. Misha and her assistants provide a safe, nurturing, and stimulating environment, with a great variety of activities that encourage learning and development. Communication is excellent, and we truly appreciate the kindness, patience, and dedication shown every day. We couldn't ask for better care and would highly recommend.",
+    name:"Penelope, parent of Louis", child:"Over 2 years with us", color:"#EFA83A"
+  },
+  {
+    quote:"It is a happy place for my child. My son loves to go there and meet his friends at the nursery. Thank you for making the nursery so caring and loving.",
+    name:"Marketa, parent of Ronnie", child:"6–12 months with us", color:"#5AA9AE"
+  },
+  {
+    quote:"Happy Little Petals is a lovely nursery — they have really been great at making my daughter feel welcome and safe.",
+    name:"Lacey, parent of Vayah", child:"Less than 6 months with us", color:"#9C6BA0"
+  },
+];
+
+const NOTES = [
+  {quote:"“I am happy there.”", who:"Age unknown · via parent", extra:"", pin:"#F0665C"},
+  {quote:"“Lots of toys to play both indoor and outdoor. Yummy lunch.”", who:"Louis", extra:"Wish: “I like playing more puzzles and time outside.”", pin:"#EFA83A"},
+  {quote:"“To meet friends.” Favourite activity: cars, going outside, singing and dancing.", who:"Ronnie", extra:"", pin:"#5AA9AE"},
+  {quote:"“Sand pit, water table, friends.”", who:"Vayah", extra:"", pin:"#9C6BA0"},
+];
+
+/* ============================================================
+   RENDER: floating petals in hero
+   ============================================================ */
+(function petals(){
+  const host = document.getElementById('petalDrift');
+  const colors = ['#F0665C','#EFA83A','#9C6BA0','#5AA9AE'];
+  for(let i=0;i<9;i++){
+    const s = document.createElement('span');
+    const left = Math.random()*100;
+    const dur = 9 + Math.random()*8;
+    const delay = Math.random()*10;
+    s.style.left = left+'%';
+    s.style.background = colors[i%colors.length];
+    s.style.animationDuration = dur+'s';
+    s.style.animationDelay = delay+'s';
+    host.appendChild(s);
+  }
+})();
+
+/* ============================================================
+   RENDER: garden flowers
+   ============================================================ */
+const bedFlowers = document.getElementById('bedFlowers');
+const bedPanels = document.getElementById('bedPanels');
+SECTIONS.forEach((sec, idx)=>{
+  const pot = document.createElement('button');
+  pot.className = 'flowerpot';
+  pot.setAttribute('aria-expanded','false');
+  pot.innerHTML = `
+    <div class="flower-wrap">
+      <div class="stem"></div>
+      <div class="leaf l"></div>
+      <div class="leaf r"></div>
+      ${petalsHTML(sec.color)}
+      <div class="flower-center" style="background:${sec.colorDark}"><span>${Math.round(sec.pct)}%</span></div>
+    </div>
+    <div class="flower-name">${sec.name}</div>
+    <div class="flower-meta">${sec.n} questions</div>
+    <div class="flower-chevron"><span class="chev">▾</span> tap to explore</div>
+  `;
+  pot.addEventListener('click', ()=>toggleSection(idx));
+  bedFlowers.appendChild(pot);
+
+  const panel = document.createElement('div');
+  panel.className = 'qpanel';
+  panel.id = 'panel-'+sec.key;
+  panel.innerHTML = `<div class="qpanel-inner">
+      <div class="qpanel-title">${sec.name}</div>
+      <div class="qpanel-sub">${sec.sa} Strongly Agree · ${sec.a} Agree · ${sec.na} Not applicable — sorted by strength of agreement</div>
+      ${sec.questions.slice().sort((a,b)=>{
+        const pa = a.sa/(a.sa+a.a||1), pb = b.sa/(b.sa+b.a||1);
+        return pb-pa;
+      }).map(q=>{
+        const answered = q.sa+q.a;
+        const saw = answered? (q.sa/answered*100):0;
+        const aw = answered? (q.a/answered*100):0;
+        const pct = answered? Math.round(q.sa/answered*100):0;
+        return `<div class="qrow">
+          <div class="qrow-top"><span>${q.q}</span><span class="qpct">${pct}% SA</span></div>
+          <div class="qbar"><div class="qbar-sa" style="width:${saw}%;background:${sec.color}"></div><div class="qbar-a" style="width:${aw}%;background:${sec.color}"></div></div>
+          <div class="qmeta">${q.sa} Strongly Agree · ${q.a} Agree${q.na? ' · '+q.na+' N/A':''}</div>
+        </div>`;
+      }).join('')}
+  </div>`;
+  bedPanels.appendChild(panel);
+});
+
+function petalsHTML(color){
+  let out = '';
+  const count = 8;
+  for(let i=0;i<count;i++){
+    const deg = i*(360/count);
+    out += `<div class="petal-spoke" style="transform:rotate(${deg}deg);"><div class="petal" style="background:${color};"></div></div>`;
+  }
+  return out;
+}
+
+function toggleSection(idx){
+  const sec = SECTIONS[idx];
+  const panel = document.getElementById('panel-'+sec.key);
+  const pot = bedFlowers.querySelectorAll('.flowerpot')[idx];
+  const isOpen = panel.classList.contains('open');
+  // close all
+  bedPanels.querySelectorAll('.qpanel').forEach(p=>p.classList.remove('open'));
+  bedFlowers.querySelectorAll('.flowerpot').forEach(p=>{p.classList.remove('active'); p.setAttribute('aria-expanded','false');});
+  if(!isOpen){
+    panel.classList.add('open');
+    pot.classList.add('active');
+    pot.setAttribute('aria-expanded','true');
+  }
+}
+// open first section by default
+window.addEventListener('load', ()=> toggleSection(0));
+
+/* ============================================================
+   RENDER: radar chart
+   ============================================================ */
+const ctx = document.getElementById('radarChart');
+new Chart(ctx, {
+  type:'radar',
+  data:{
+    labels: SECTIONS.map(s=>s.name.split(' & ')),
+    datasets:[{
+      label:'% Strongly Agree',
+      data: SECTIONS.map(s=>s.pct),
+      backgroundColor:'rgba(240,102,92,0.18)',
+      borderColor:'#D6483F',
+      borderWidth:2,
+      pointBackgroundColor: SECTIONS.map(s=>s.colorDark),
+      pointBorderColor:'#fff',
+      pointRadius:5,
+      pointHoverRadius:7,
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{ r:{
+      min:0, max:100, ticks:{stepSize:25, backdropColor:'transparent', color:'#8a7f6a', font:{size:10}},
+      grid:{color:'#E7DBC3'}, angleLines:{color:'#E7DBC3'},
+      pointLabels:{color:'#332B22', font:{family:'Nunito', weight:700, size:11}}
+    }},
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(c)=> c.parsed.r+'% strongly agree'}} }
+  }
+});
+const legendHost = document.getElementById('radarLegend');
+SECTIONS.forEach(s=>{
+  legendHost.innerHTML += `<span><i style="background:${s.color}"></i>${s.name} · ${s.pct}%</span>`;
+});
+
+/* ============================================================
+   RENDER: growth timeline
+   ============================================================ */
+const tl = document.getElementById('timeline');
+TIMELINE.forEach(t=>{
+  const el = document.createElement('div');
+  el.className = 'tstage';
+  el.innerHTML = `
+    <span class="tplant">${t.plant}</span>
+    <div class="tcount">${t.count}</div>
+    <div class="tlabel">${t.short}</div>
+    <div class="tsub">${t.label}</div>
+  `;
+  tl.appendChild(el);
+});
+
+/* ============================================================
+   RENDER: testimonial carousel
+   ============================================================ */
+const cardsHost = document.getElementById('cards');
+const dotsHost = document.getElementById('dots');
+let vIndex = 0;
+VOICES.forEach((v,i)=>{
+  const initials = v.name.replace('A Happy Little Petals parent','HLP').split(/[\s,]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const card = document.createElement('article');
+  card.className = 'vcard' + (i===0?' show':'');
+  card.innerHTML = `
+    <span class="mark">&ldquo;</span>
+    <blockquote>${v.quote}</blockquote>
+    <footer class="vcard-footer">
+      <div class="avatar" style="background:${v.color}">${initials}</div>
+      <div><div class="vname">${v.name}</div><div class="vtag">${v.child}</div></div>
+    </footer>
+  `;
+  cardsHost.appendChild(card);
+
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.setAttribute('aria-label','Show testimonial '+(i+1));
+  dot.addEventListener('click', ()=>showVoice(i));
+  dotsHost.appendChild(dot);
+});
+
+function showVoice(i){
+  vIndex = (i+VOICES.length)%VOICES.length;
+  document.querySelectorAll('.vcard').forEach((c,ci)=>c.classList.toggle('show', ci===vIndex));
+  document.querySelectorAll('.dot').forEach((d,di)=>d.classList.toggle('active', di===vIndex));
+}
+document.getElementById('prevBtn').addEventListener('click', ()=>showVoice(vIndex-1));
+document.getElementById('nextBtn').addEventListener('click', ()=>showVoice(vIndex+1));
+let autoTimer = setInterval(()=>showVoice(vIndex+1), 7000);
+document.querySelector('.carousel').addEventListener('mouseenter', ()=>clearInterval(autoTimer));
+document.querySelector('.carousel').addEventListener('mouseleave', ()=>{ autoTimer = setInterval(()=>showVoice(vIndex+1), 7000); });
+
+/* ============================================================
+   RENDER: little voices notes
+   ============================================================ */
+const noteGrid = document.getElementById('noteGrid');
+NOTES.forEach(n=>{
+  const el = document.createElement('div');
+  el.className = 'note';
+  el.innerHTML = `
+    <div class="pin" style="background:${n.pin}"></div>
+    <div class="note-quote">${n.quote}</div>
+    <div class="note-who">— ${n.who}</div>
+    ${n.extra? `<div class="note-extra">${n.extra}</div>`:''}
+  `;
+  noteGrid.appendChild(el);
+});
+
+/* ============================================================
+   Scroll reveal
+   ============================================================ */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
