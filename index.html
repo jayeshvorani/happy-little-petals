@@ -136,27 +136,39 @@
   /* ================= GARDEN ================= */
   .garden{background:var(--paper); padding:88px 0 96px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .garden-layout{display:grid; grid-template-columns: 1.35fr 1fr; gap:34px; align-items:start;}
+  .garden-layout > *{min-width:0;}
   @media (max-width:860px){.garden-layout{grid-template-columns:1fr;}}
 
   .bed{
+    position:relative;
     border-radius:var(--radius-lg);
     border:1px solid var(--line);
     overflow:hidden;
+    background:var(--paper);
   }
   .bed-flowers{
-    background:linear-gradient(180deg, transparent 0%, transparent 78%, #E9DCBB 78%, #E4D3A9 100%);
-    padding:34px 26px 22px;
+    padding:30px 26px 26px;
     display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
   }
+  .bed-flowers > *{min-width:0;}
   @media (max-width:640px){
-    .bed-flowers{grid-template-columns:repeat(2,1fr); row-gap:34px;
-      background:linear-gradient(180deg, transparent 0%, transparent 88%, #E9DCBB 88%, #E4D3A9 100%);}
+    .bed-flowers{grid-template-columns:repeat(2,1fr); gap:16px 10px;}
   }
   .bed-panels{background:var(--paper);}
 
-  .flowerpot{text-align:center; cursor:pointer; background:none; border:none; font-family:inherit; padding:6px 4px 0; width:100%;}
+  .flowerpot{text-align:center; cursor:pointer; background:none; border:none; font-family:inherit; padding:0; width:100%; min-width:0;}
   .flowerpot:focus-visible{outline:3px solid var(--sky); outline-offset:4px; border-radius:12px;}
-  .flower-wrap{position:relative; width:118px; height:118px; margin:0 auto 6px; transition:transform .35s ease;}
+  /* Plant zone: fixed pixel height, entirely self-contained per flower.
+     The soil band inside it is anchored with fixed px stops relative to
+     THIS box only — never a percentage of variable content — so it is
+     immune to text reflow, wrapping, or the grid wrapping into multiple
+     rows on narrow screens. */
+  .flower-plant{
+    position:relative; height:140px; margin-bottom:14px;
+    background:linear-gradient(180deg, transparent 0, transparent 112px, #E9DCBB 112px, #E4D3A9 140px);
+    border-radius:0 0 14px 14px;
+  }
+  .flower-wrap{position:absolute; top:0; left:50%; width:118px; height:118px; margin-left:-59px; transition:transform .35s ease;}
   .flowerpot:hover .flower-wrap, .flowerpot.active .flower-wrap{transform:translateY(-6px) scale(1.04);}
   .stem{position:absolute; bottom:-14px; left:50%; width:4px; height:26px; background:var(--leaf-light); transform:translateX(-50%); border-radius:3px;}
   .leaf{position:absolute; bottom:-6px; width:16px;height:9px; background:var(--leaf-light); border-radius:0 100% 0 100%;}
@@ -170,13 +182,34 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:inset 0 0 0 4px #fff;
     z-index:3;
   }
-  .flower-center span{font-family:'Fredoka'; font-weight:700; font-size:19px; color:#fff; line-height:1;}
-  .flower-center small{font-family:'Nunito'; font-weight:800; font-size:7.5px; color:#fff; opacity:.85; letter-spacing:.03em; text-transform:uppercase; margin-top:1px;}
-  .flower-name{font-weight:800; font-size:13.5px; margin-top:10px; color:var(--ink);}
-  .flower-meta{font-size:12px; color:var(--ink-soft); margin-top:2px;}
-  .flower-chevron{margin-top:6px; font-size:11px; color:var(--ink-soft);}
-  .flower-chevron .chev{display:inline-block; transition:transform .3s ease;}
-  .flowerpot.active .flower-chevron .chev{transform:rotate(180deg);}
+  .flower-center span{font-family:'Fredoka'; font-weight:700; font-size:20px; color:#fff; line-height:1;}
+  /* Name reserves space for up to 2 lines so every column has identical rhythm
+     below it, regardless of how long that section's title is. */
+  .flower-name{font-weight:800; font-size:13.5px; line-height:1.3; min-height:35px; color:var(--ink);}
+  /* Both of these are short, fixed phrases by design (never user-generated,
+     never concatenated with other text) and are pinned to one line so they
+     cannot silently wrap into the strip below at any supported width. */
+  .flower-meta{font-size:12px; color:var(--ink-soft); margin-top:4px; white-space:nowrap;}
+  .flower-positive{font-size:11.5px; font-weight:800; color:var(--leaf); margin-top:3px; white-space:nowrap;}
+  .flower-tap{
+    margin-top:12px; display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:800; color:#fff; letter-spacing:.01em;
+    padding:5px 12px 5px 10px; border-radius:999px; box-shadow:0 2px 0 rgba(0,0,0,.08);
+    white-space:nowrap;
+  }
+  .flower-tap .chev{display:inline-block; font-size:9px; transition:transform .3s ease;}
+  .flowerpot.active .flower-tap .chev{transform:rotate(180deg);}
+  @keyframes tapPulse{
+    0%,100%{box-shadow:0 2px 0 rgba(0,0,0,.08), 0 0 0 0 rgba(0,0,0,.14);}
+    50%{box-shadow:0 2px 0 rgba(0,0,0,.08), 0 0 0 6px rgba(0,0,0,0);}
+  }
+  .flowerpot:not(.active) .flower-tap{animation:tapPulse 2.2s ease-in-out infinite;}
+  .flowerpot:nth-child(2):not(.active) .flower-tap{animation-delay:.3s;}
+  .flowerpot:nth-child(3):not(.active) .flower-tap{animation-delay:.6s;}
+  .flowerpot:nth-child(4):not(.active) .flower-tap{animation-delay:.9s;}
+  @media (prefers-reduced-motion: reduce){
+    .flowerpot .flower-tap{animation:none !important;}
+  }
 
   .side-card{
     background:var(--cream); border:1px solid var(--line); border-radius:var(--radius-lg);
@@ -184,7 +217,8 @@
   }
   .side-card h3{font-size:17px; margin-bottom:4px;}
   .side-card .sub{font-size:13px; color:var(--ink-soft); margin-bottom:14px;}
-  .chart-box{position:relative; height:220px;}
+  .chart-box{position:relative; height:220px; width:100%; min-width:0;}
+  .chart-box canvas{max-width:100% !important;}
   .legend-mini{display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:14px; font-size:12.5px; color:var(--ink-soft);}
   .legend-mini span{display:inline-flex; align-items:center; gap:6px; font-weight:700;}
   .legend-mini i{width:10px;height:10px;border-radius:3px; display:inline-block;}
@@ -225,7 +259,7 @@
   /* ================= VOICES ================= */
   .voices{padding:92px 0; background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .carousel{max-width:720px; margin:0 auto; position:relative;}
-  .cards{position:relative; min-height:250px;}
+  .cards{position:relative; min-height:250px; overflow:hidden;}
   .vcard{
     position:absolute; inset:0; background:var(--cream); border:1px solid var(--line); border-radius:var(--radius-lg);
     padding:38px 42px; box-shadow:var(--shadow); opacity:0; transform:translateX(30px) scale(.98);
@@ -567,16 +601,19 @@ SECTIONS.forEach((sec, idx)=>{
   pot.className = 'flowerpot';
   pot.setAttribute('aria-expanded','false');
   pot.innerHTML = `
-    <div class="flower-wrap">
-      <div class="stem"></div>
-      <div class="leaf l"></div>
-      <div class="leaf r"></div>
-      ${petalsHTML(sec.color)}
-      <div class="flower-center" style="background:${sec.colorDark}" title="${sec.n} questions in this bed — every single one came back Agree or Strongly Agree."><span>${sec.n}</span><small>${sec.n===1?'question':'questions'}</small></div>
+    <div class="flower-plant">
+      <div class="flower-wrap">
+        <div class="stem"></div>
+        <div class="leaf l"></div>
+        <div class="leaf r"></div>
+        ${petalsHTML(sec.color)}
+        <div class="flower-center" style="background:${sec.colorDark}" title="${sec.n} questions in this bed — every single one came back Agree or Strongly Agree."><span>${sec.n}</span></div>
+      </div>
     </div>
     <div class="flower-name">${sec.name}</div>
-    <div class="flower-meta"><strong style="color:var(--leaf)">✓ every question, positive</strong></div>
-    <div class="flower-chevron"><span class="chev">▾</span> tap to explore</div>
+    <div class="flower-meta">${sec.n} question${sec.n===1?'':'s'}</div>
+    <div class="flower-positive">✓ all positive</div>
+    <div class="flower-tap" style="background:${sec.colorDark}"><span class="chev">▾</span> Tap to open</div>
   `;
   pot.addEventListener('click', ()=>toggleSection(idx));
   bedFlowers.appendChild(pot);
@@ -626,11 +663,17 @@ function toggleSection(idx){
   const isOpen = panel.classList.contains('open');
   // close all
   bedPanels.querySelectorAll('.qpanel').forEach(p=>p.classList.remove('open'));
-  bedFlowers.querySelectorAll('.flowerpot').forEach(p=>{p.classList.remove('active'); p.setAttribute('aria-expanded','false');});
+  bedFlowers.querySelectorAll('.flowerpot').forEach(p=>{
+    p.classList.remove('active'); p.setAttribute('aria-expanded','false');
+    const label = p.querySelector('.flower-tap');
+    if(label) label.innerHTML = '<span class="chev">▾</span> Tap to open';
+  });
   if(!isOpen){
     panel.classList.add('open');
     pot.classList.add('active');
     pot.setAttribute('aria-expanded','true');
+    const label = pot.querySelector('.flower-tap');
+    if(label) label.innerHTML = '<span class="chev">▾</span> Tap to close';
   }
 }
 // open first section by default
